@@ -1,16 +1,19 @@
-﻿[*] PHP native interface checks.
-[*] Renamed cart class to CShoppingCart.
+0.6
+[*] New naming conventions.
+[+] English readme.
+
+0.5rc2
+[*] Fixed bug when product count was set to zero when restoring from session.
+[*] Changed behaviour of put() method.
+[+] Added update() method. Updates cart object info.
+
+0.5
+[*] Now only IECartPosition object could be put into cart.
+[*] Method names changed.
 [+] Unit tests.
+[+] PHP native interface checks.
+[*] Renamed cart class to CShoppingCart.
 [+] Single model can be put in array style.
 
 0.2
 [+] Initial relase.
-
-0.5
-[*] Исправленна ошибка при которой в корзину можно было добавить товары не разрешеннных типов
-[*] Изменения в именовании методов.
-[*] дописаны unit тесты.
-0.5rc2
-[*] Исправленна ошибка, приводящая к тому, что при восстановлении из сессии обнулялось значение кол-во товаров.
-[*] Изменен алгоритм работы метода put. 
-[+] Добавлен метод update. Обновляет информацию о позиции в корзине.

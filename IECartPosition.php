@@ -1,13 +1,13 @@
 <?php
 
 /**
- * ICartPosition
+ * IECartPosition
  *
  * @author pirrat <mrakobesov@gmail.com>
- * @version 0.5 rc2
+ * @version 0.6
  * @package ShoppingCart
  */
-interface ICartPosition {
+interface IECartPosition {
     /**
      * @return mixed уникальный индификатор
      */

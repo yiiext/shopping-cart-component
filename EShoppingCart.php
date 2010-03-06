@@ -3,12 +3,12 @@
  * Корзина товаров
  *
  * @author pirrat <mrakobesov@gmail.com>
- * @version 0.5 rc2
+ * @version 0.6
  * @package ShoppingCart
  */
 
 
-class CShoppingCart extends CMap
+class EShoppingCart extends CMap
 {
 
     /**
@@ -42,13 +42,13 @@ class CShoppingCart extends CMap
      * Добавляет в коллекцию объект товара
      * Если товар был добавлен ранее в корзину, то
      * инофрмация о нем обновляется ,а кол-во увеличивается на $quantity
-     * @param ICartPosition $product
+     * @param IECartPosition $product
      * @param int кол-во элементов позиции
      */
-    public function put(ICartPosition $product, $quantity = 1)
+    public function put(IECartPosition $product, $quantity = 1)
     {
         $key = $product->getId();
-        if($this->itemAt($key) instanceof ICartPosition)
+        if($this->itemAt($key) instanceof IECartPosition)
         {
             $product = $this->itemAt($key);
             $oldQuantity = $product->getQuantity();
@@ -86,12 +86,12 @@ class CShoppingCart extends CMap
      * @param int $key
      * @param int $quantity
      */
-    public function update(ICartPosition $product, $quantity)
+    public function update(IECartPosition $product, $quantity)
     {
 
         $key = $product->getId();
 
-        $product->attachBehavior("CartPosition", new CartPositionBehaviour());
+        $product->attachBehavior("CartPosition", new ECartPositionBehaviour());
         $product->setRefresh($this->refresh);
 
         $product->setQuantity($quantity);

@@ -4,12 +4,12 @@
  * Объект позиции в корзине
  *
  * @author pirrat <mrakobesov@gmail.com>
- * @version 0.5rc2
+ * @version 0.6
  * @package ShoppingCart
+ *
+ * Can be used with not AR models.
  */
-
-// We can use it for not AR models!
-class CartPositionBehaviour extends CActiveRecordBehavior {
+class ECartPositionBehaviour extends CActiveRecordBehavior {
 
     /**
      * кол-во единиц позиции
