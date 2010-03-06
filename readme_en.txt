@@ -5,7 +5,7 @@ Provides shpping cart functionality for models.
 Installing and configuring
 --------------------------
 
-1. Add to `protected/config/main.php`:
+Add to `protected/config/main.php`:
 ~~~
 [php]
 'import' => array(

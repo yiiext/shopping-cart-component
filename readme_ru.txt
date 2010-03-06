@@ -5,7 +5,7 @@ Shopping Cart
 Установка и настройка
 ---------------------
 
-1. В `protected/config/main.php` добавить:
+В `protected/config/main.php` добавить:
 ~~~
 [php]
 'import' => array(
