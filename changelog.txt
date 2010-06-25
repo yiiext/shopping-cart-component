@@ -1,3 +1,9 @@
+0.7
+[*] Refactor: renamed variables.
+[*] Updated documentation.
+[+] Add Events
+[+] New Unit tests.
+
 0.6
 [*] New naming conventions.
 [+] English readme.

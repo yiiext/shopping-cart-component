@@ -1,9 +1,9 @@
 <?php
 /**
- * Корзина товаров
+ * Shopping cart class
  *
  * @author pirrat <mrakobesov@gmail.com>
- * @version 0.6
+ * @version 0.7
  * @package ShoppingCart
  */
 
@@ -12,14 +12,11 @@ class EShoppingCart extends CMap
 {
 
     /**
-     * Обновлять модели при востановлении из сессии?
+     * Update the model on session restore?
      * @var boolean
      */
     public $refresh = true;
 
-    /**
-     * При иницализации копируем из сессии корзину
-     */
     public function init()
     {
 
@@ -27,11 +24,11 @@ class EShoppingCart extends CMap
     }
 
     /**
-     * Востанавливает объект из сессии
+     * Restores the object from the session
      */
     public function restoreFromSession()
     {
-        $data = Yii::app()->user->getState(__CLASS__);
+        $data = Yii::app()->getUser()->getState(__CLASS__);
         if(is_array($data) || $data instanceof Traversable)
             foreach($data as $key=>$product)
                 parent::add($key, $product);
@@ -39,24 +36,26 @@ class EShoppingCart extends CMap
     }
 
     /**
-     * Добавляет в коллекцию объект товара
-     * Если товар был добавлен ранее в корзину, то
-     * инофрмация о нем обновляется ,а кол-во увеличивается на $quantity
-     * @param IECartPosition $product
-     * @param int кол-во элементов позиции
+     * Add items to cart
+     * If the position was previously added to the cart,
+     * then information of it is updated, and count increases by $quantity
+     * @param IECartPosition $position
+     * @param int count of elements positions
      */
-    public function put(IECartPosition $product, $quantity = 1)
+    public function put(IECartPosition $position, $quantity = 1)
     {
-        $key = $product->getId();
+        $key = $position->getId();
         if($this->itemAt($key) instanceof IECartPosition)
         {
-            $product = $this->itemAt($key);
-            $oldQuantity = $product->getQuantity();
+            $position = $this->itemAt($key);
+            $oldQuantity = $position->getQuantity();
             $quantity += $oldQuantity;
         }
 
-        $this->update($product, $quantity);
+        $this->update($position, $quantity);
+        
     }
+
 
     /**
      * @param mixed $key
@@ -68,60 +67,66 @@ class EShoppingCart extends CMap
     }
 
     /**
-     * Удаляет из коллекции элемент по ключу
+     * Removes element from the collection of key
      * @param mixed $key
      */
     public function remove($key)
     {
         parent::remove($key);
+        $this->onRemovePosition(new CEvent($this));
         $this->saveState();
     }
 
+
     /**
-     * Обновляет позицию товара в корзине
-     * Если продукт был ранее добавлен, то в корзине он обновится,
-     * если продукта ранее не было в корзине, он будет туда добавлен.
-     * Если кол-во менее 1, товар будет удален.
+     * Updates the position in the collection
+     * If the position was previously added, then it will be updated in cart,
+     * if the position was not previously in the cart, it will be added there.
+     * If the count of less than 1, the position will be deleted.
      *
-     * @param int $key
+     * @param IECartPosition $position
      * @param int $quantity
      */
-    public function update(IECartPosition $product, $quantity)
+    public function update(IECartPosition $position, $quantity)
     {
+        if(!($position instanceof CComponent))
+            throw new InvalidArgumentException('invalid argument 1, product must implement CComponent interface');
 
-        $key = $product->getId();
+        $key = $position->getId();
 
-        $product->attachBehavior("CartPosition", new ECartPositionBehaviour());
-        $product->setRefresh($this->refresh);
+        $position->attachBehavior("CartPosition", new ECartPositionBehaviour());
+        $position->setRefresh($this->refresh);
 
-        $product->setQuantity($quantity);
+        $position->setQuantity($quantity);
 
-        if($product->getQuantity() < 1)
+        if($position->getQuantity() < 1)
             $this->remove($key);
         else
-            parent::add($key, $product);
+            parent::add($key, $position);
 
+        $this->onUpdatePoistion(new CEvent($this));
         $this->saveState();
     }
 
     /**
-     * Сохраняет состояние объекта
+     * Saves the state of the object in the session.
+     * @return void
      */
     protected function saveState()
     {
-        Yii::app()->user->setState(__CLASS__, $this->toArray());
+        Yii::app()->getUser()->setState(__CLASS__, $this->toArray());
     }
 
     /**
-     * Возращает кол-во товаров в корзине
+     * Returns count of items in cart
      * @return int
      */
     public function getItemsCount()
     {
         $count = 0;
-        foreach($this as $product)
+        foreach($this as $position)
         {
-            $count += $product->getQuantity();
+            $count += $position->getQuantity();
         }
 
         return $count;
@@ -129,18 +134,28 @@ class EShoppingCart extends CMap
 
 
     /**
-     * Возращает суммарную стоимость всех позиций в корзине
+     * Returns cost of cart
      * @return float
      */
     public function getCost()
     {
         $price = 0.0;
-        foreach($this as $product)
+        foreach($this as $position)
         {
-            $price += $product->getSummPrice();
+            $price += $position->getSummPrice();
         }
 
         return $price;
+    }
+
+    public function onRemovePosition($event)
+    {
+        $this->raiseEvent('onRemovePosition', $event);
+    }
+
+    public function onUpdatePoistion($event)
+    {
+        $this->raiseEvent('onUpdatePoistion', $event);
     }
 
 

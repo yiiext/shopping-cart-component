@@ -4,16 +4,16 @@
  * IECartPosition
  *
  * @author pirrat <mrakobesov@gmail.com>
- * @version 0.6
+ * @version 0.7
  * @package ShoppingCart
  */
 interface IECartPosition {
     /**
-     * @return mixed уникальный индификатор
+     * @return mixed id
      */
     public function getId();
     /**
-     * @return float цена
+     * @return float price
      */
     public function getPrice();
 }

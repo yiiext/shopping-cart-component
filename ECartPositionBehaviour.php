@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Объект позиции в корзине
+ * position in the cart
  *
  * @author pirrat <mrakobesov@gmail.com>
- * @version 0.6
+ * @version 0.7
  * @package ShoppingCart
  *
  * Can be used with not AR models.
@@ -12,12 +12,12 @@
 class ECartPositionBehaviour extends CActiveRecordBehavior {
 
     /**
-     * кол-во единиц позиции
+     * number of positions
      * @var int
      */
     private $quantity = 0;
     /**
-     * Обновлять модель при востановлении из сессии?
+     * Update model on session restore?
      * @var boolean
      */
     private $refresh = true;
@@ -29,7 +29,7 @@ class ECartPositionBehaviour extends CActiveRecordBehavior {
 
     /**
      *
-     * @return float стоимость всех единиц позиции
+     * @return float cost  units of the position
      *
      */
     public function getSummPrice() {
@@ -38,14 +38,14 @@ class ECartPositionBehaviour extends CActiveRecordBehavior {
 
     /**
      *
-     * @return int кол-во единиц данной позиции
+     * @return int number of units of the position
      */
     public function getQuantity() {
         return $this->quantity;
     }
 
     /**
-     * Установить количество этой позиции в заказе
+     * set quantity of position
      *
      * @param int quantity
      */
@@ -54,8 +54,8 @@ class ECartPositionBehaviour extends CActiveRecordBehavior {
     }
 
     /**
-     * Магический метод, отрабатывает при востановлении
-     * модели из сессии. Если установлен флаг, то обновляет данные модели
+     * Magic method, call on restore from session
+     * Refresh data to model
      */
     public function __wakeup() {
         if($this->refresh === true)
@@ -69,13 +69,5 @@ class ECartPositionBehaviour extends CActiveRecordBehavior {
     public function setRefresh($refresh) {
         $this->refresh = $refresh;
     }
-
-
-    /*public function __sleep()
-    {
-	$this->owner->_md=null;
-	return array_keys((array)$thi);
-    }*/
-
 
 }
