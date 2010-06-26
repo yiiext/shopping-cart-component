@@ -32,7 +32,7 @@ class ECartPositionBehaviour extends CActiveRecordBehavior {
      * @return float
      *
      */
-    public function getSummPrice() {
+    public function getSumPrice() {
         return $this->owner->getPrice() * $this->quantity;
     }
 
