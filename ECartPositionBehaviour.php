@@ -85,8 +85,8 @@ class ECartPositionBehaviour extends CActiveRecordBehavior {
      * @param  $price
      * @return void
      */
-    public function setDiscountPrice($price) {
-        $this->discountPrice = $price;
+    public function addDiscountPrice($price) {
+        $this->discountPrice += $price;
     }
 
 }

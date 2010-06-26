@@ -16,6 +16,11 @@ class EShoppingCart extends CMap {
     public $refresh = true;
 
     public $discounts = array();
+    /**
+     * Сумма скидки на всю корзину
+     * @var float
+     */
+    protected $discountPrice = 0.0;
 
     public function init() {
 
@@ -138,6 +143,9 @@ class EShoppingCart extends CMap {
             $price += $position->getSumPrice($withDiscount);
         }
 
+        if($withDiscount)
+            $price -= $this->discountPrice;
+
         return $price;
     }
 
@@ -160,6 +168,10 @@ class EShoppingCart extends CMap {
             $discountObj->setShoppingCart($this);
             $discountObj->apply();
         }
+    }
+
+    public function addDiscountPrice($price){
+        $this->discountPrice += $price;
     }
 
 

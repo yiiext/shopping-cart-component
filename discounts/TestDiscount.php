@@ -15,7 +15,7 @@ class TestDiscount extends IEDiscount {
             if ($quantity > 1) {
                 $productPrice = $position->getPrice();
                 $discountPrice = $this->rate * $position->getPrice() / 100;
-                $position->setDiscountPrice($discountPrice);
+                $position->addDiscountPrice($discountPrice);
             }
         }
     }
