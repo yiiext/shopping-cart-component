@@ -158,7 +158,7 @@ class EShoppingCart extends CMap {
     }
 
     /**
-     * Применяет скидки к каждой позиции
+     * apply discounts for all positions
      * @return void
      */
     protected function applyDiscounts() {
@@ -172,6 +172,23 @@ class EShoppingCart extends CMap {
 
     public function addDiscountPrice($price){
         $this->discountPrice += $price;
+    }
+
+    /**
+     * Returns array all positions
+     * @return array
+     */
+    public function getPositions()
+    {
+        return $this->toArray();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return !(bool)$this->getCount();
     }
 
 

@@ -16,8 +16,8 @@ abstract class IEDiscount {
     }
 
     /**
-     * Применить скидку к позиции.
-     * в реализации нужно установить сумму скидки на позицию
+     * Apply discount
+     *
      * @abstract
      * @return void
      */
