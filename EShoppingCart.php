@@ -7,9 +7,7 @@
  * @package ShoppingCart
  */
 
-
-class EShoppingCart extends CMap
-{
+class EShoppingCart extends CMap {
 
     /**
      * Update the model on session restore?
@@ -17,8 +15,9 @@ class EShoppingCart extends CMap
      */
     public $refresh = true;
 
-    public function init()
-    {
+    public $discounts = array();
+
+    public function init() {
 
         $this->restoreFromSession();
     }
@@ -26,13 +25,12 @@ class EShoppingCart extends CMap
     /**
      * Restores the shopping cart from the session
      */
-    public function restoreFromSession()
-    {
+    public function restoreFromSession() {
         $data = Yii::app()->getUser()->getState(__CLASS__);
-        if(is_array($data) || $data instanceof Traversable)
-            foreach($data as $key=>$product)
+        if (is_array($data) || $data instanceof Traversable)
+            foreach ($data as $key => $product)
                 parent::add($key, $product);
-        
+
     }
 
     /**
@@ -42,18 +40,16 @@ class EShoppingCart extends CMap
      * @param IECartPosition $position
      * @param int count of elements positions
      */
-    public function put(IECartPosition $position, $quantity = 1)
-    {
+    public function put(IECartPosition $position, $quantity = 1) {
         $key = $position->getId();
-        if($this->itemAt($key) instanceof IECartPosition)
-        {
+        if ($this->itemAt($key) instanceof IECartPosition) {
             $position = $this->itemAt($key);
             $oldQuantity = $position->getQuantity();
             $quantity += $oldQuantity;
         }
 
         $this->update($position, $quantity);
-        
+
     }
 
 
@@ -61,8 +57,7 @@ class EShoppingCart extends CMap
      * @param mixed $key
      * @param mixed $value
      */
-    public function add($key, $value)
-    {
+    public function add($key, $value) {
         $this->put($value, 1);
     }
 
@@ -70,9 +65,9 @@ class EShoppingCart extends CMap
      * Removes position from the shopping cart of key
      * @param mixed $key
      */
-    public function remove($key)
-    {
+    public function remove($key) {
         parent::remove($key);
+        $this->applyDiscounts();
         $this->onRemovePosition(new CEvent($this));
         $this->saveState();
     }
@@ -87,9 +82,8 @@ class EShoppingCart extends CMap
      * @param IECartPosition $position
      * @param int $quantity
      */
-    public function update(IECartPosition $position, $quantity)
-    {
-        if(!($position instanceof CComponent))
+    public function update(IECartPosition $position, $quantity) {
+        if (!($position instanceof CComponent))
             throw new InvalidArgumentException('invalid argument 1, product must implement CComponent interface');
 
         $key = $position->getId();
@@ -99,11 +93,12 @@ class EShoppingCart extends CMap
 
         $position->setQuantity($quantity);
 
-        if($position->getQuantity() < 1)
+        if ($position->getQuantity() < 1)
             $this->remove($key);
         else
             parent::add($key, $position);
 
+        $this->applyDiscounts();
         $this->onUpdatePoistion(new CEvent($this));
         $this->saveState();
     }
@@ -112,8 +107,7 @@ class EShoppingCart extends CMap
      * Saves the state of the object in the session.
      * @return void
      */
-    protected function saveState()
-    {
+    protected function saveState() {
         Yii::app()->getUser()->setState(__CLASS__, $this->toArray());
     }
 
@@ -121,10 +115,9 @@ class EShoppingCart extends CMap
      * Returns count of items in shopping cart
      * @return int
      */
-    public function getItemsCount()
-    {
+    public function getItemsCount() {
         $count = 0;
-        foreach($this as $position)
+        foreach ($this as $position)
         {
             $count += $position->getQuantity();
         }
@@ -135,27 +128,38 @@ class EShoppingCart extends CMap
 
     /**
      * Returns total price for all items in the shopping cart.
+     * @param bool $withDiscount
      * @return float
      */
-    public function getCost()
-    {
+    public function getCost($withDiscount = true) {
         $price = 0.0;
-        foreach($this as $position)
+        foreach ($this as $position)
         {
-            $price += $position->getSummPrice();
+            $price += $position->getSumPrice($withDiscount);
         }
 
         return $price;
     }
 
-    public function onRemovePosition($event)
-    {
+    public function onRemovePosition($event) {
         $this->raiseEvent('onRemovePosition', $event);
     }
 
-    public function onUpdatePoistion($event)
-    {
+    public function onUpdatePoistion($event) {
         $this->raiseEvent('onUpdatePoistion', $event);
+    }
+
+    /**
+     * Применяет скидки к каждой позиции
+     * @return void
+     */
+    protected function applyDiscounts() {
+        foreach ($this->discounts as $discount)
+        {
+            $discountObj = Yii::createComponent($discount);
+            $discountObj->setShoppingCart($this);
+            $discountObj->apply();
+        }
     }
 
 

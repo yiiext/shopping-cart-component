@@ -22,6 +22,12 @@ class ECartPositionBehaviour extends CActiveRecordBehavior {
      */
     private $refresh = true;
 
+    /**
+     * Сумма скидки на позицию
+     * @var float
+     */
+    private $discountPrice = 0.0;
+
 
     public function init() {
 
@@ -29,11 +35,15 @@ class ECartPositionBehaviour extends CActiveRecordBehavior {
 
     /**
      * Returns total price for all units of the position
+     * @param bool $withDiscount
      * @return float
      *
      */
-    public function getSumPrice() {
-        return $this->owner->getPrice() * $this->quantity;
+    public function getSumPrice($withDiscount = true) {
+        $fullSum = $this->owner->getPrice() * $this->quantity;
+        if($withDiscount)
+            $fullSum -=  $this->discountPrice;
+        return $fullSum;
     }
 
     /**
@@ -49,7 +59,7 @@ class ECartPositionBehaviour extends CActiveRecordBehavior {
      *
      * @param int quantity
      */
-    public function setQuantity( $newVal ) {
+    public function setQuantity($newVal) {
         $this->quantity = $newVal;
     }
 
@@ -58,7 +68,7 @@ class ECartPositionBehaviour extends CActiveRecordBehavior {
      * Refresh data to model
      */
     public function __wakeup() {
-        if($this->refresh === true)
+        if ($this->refresh === true)
             $this->owner->refresh();
     }
 
@@ -68,6 +78,15 @@ class ECartPositionBehaviour extends CActiveRecordBehavior {
      */
     public function setRefresh($refresh) {
         $this->refresh = $refresh;
+    }
+
+    /**
+     * Установить сумму скидки на позицию
+     * @param  $price
+     * @return void
+     */
+    public function setDiscountPrice($price) {
+        $this->discountPrice = $price;
     }
 
 }

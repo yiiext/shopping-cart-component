@@ -1,8 +1,11 @@
 0.7
-[*] Refactor: renamed variables.
+[*] fixed issues
+[*] Refactor: renamed variables and methods
 [*] Updated documentation.
+[+] Add Discounts.
 [+] Add Events
 [+] New Unit tests.
+
 
 0.6
 [*] New naming conventions.
