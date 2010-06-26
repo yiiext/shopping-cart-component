@@ -24,7 +24,7 @@ class EShoppingCart extends CMap
     }
 
     /**
-     * Restores the object from the session
+     * Restores the shopping cart from the session
      */
     public function restoreFromSession()
     {
@@ -36,7 +36,7 @@ class EShoppingCart extends CMap
     }
 
     /**
-     * Add items to cart
+     * Add item to the shopping cart
      * If the position was previously added to the cart,
      * then information of it is updated, and count increases by $quantity
      * @param IECartPosition $position
@@ -67,7 +67,7 @@ class EShoppingCart extends CMap
     }
 
     /**
-     * Removes element from the collection of key
+     * Removes position from the shopping cart of key
      * @param mixed $key
      */
     public function remove($key)
@@ -79,8 +79,8 @@ class EShoppingCart extends CMap
 
 
     /**
-     * Updates the position in the collection
-     * If the position was previously added, then it will be updated in cart,
+     * Updates the position in the shopping cart
+     * If the position was previously added, then it will be updated in shopping cart,
      * if the position was not previously in the cart, it will be added there.
      * If the count of less than 1, the position will be deleted.
      *
@@ -118,7 +118,7 @@ class EShoppingCart extends CMap
     }
 
     /**
-     * Returns count of items in cart
+     * Returns count of items in shopping cart
      * @return int
      */
     public function getItemsCount()
@@ -134,7 +134,7 @@ class EShoppingCart extends CMap
 
 
     /**
-     * Returns cost of cart
+     * Returns total price for all items in the shopping cart.
      * @return float
      */
     public function getCost()

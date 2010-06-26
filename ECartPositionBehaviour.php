@@ -28,8 +28,8 @@ class ECartPositionBehaviour extends CActiveRecordBehavior {
     }
 
     /**
-     *
-     * @return float cost  units of the position
+     * Returns total price for all units of the position
+     * @return float
      *
      */
     public function getSummPrice() {
@@ -37,15 +37,15 @@ class ECartPositionBehaviour extends CActiveRecordBehavior {
     }
 
     /**
-     *
-     * @return int number of units of the position
+     * Returns quantity.
+     * @return int
      */
     public function getQuantity() {
         return $this->quantity;
     }
 
     /**
-     * set quantity of position
+     * Updates quantity.
      *
      * @param int quantity
      */
