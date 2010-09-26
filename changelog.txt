@@ -1,4 +1,5 @@
 0.7
+[+] Updated English readme.
 [*] Refactor: renamed variables and methods.
 [*] Updated documentation.
 [+] Add Discounts.
