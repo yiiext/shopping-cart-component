@@ -12,10 +12,13 @@ Installing and configuring
 Add to `protected/config/main.php`:
 ~~~
 [php]
+'import'=>array(
+    'ext.yiiext.components.shoppingCart.*'
+),
 'components' => array(
   'shoppingCart' =>
     array(
-        'class' => 'ext.shoppingCart.EShoppingCart',
+        'class' => 'ext.yiiext.components.shoppingCart.EShoppingCart',
     ),
 )
 ~~~

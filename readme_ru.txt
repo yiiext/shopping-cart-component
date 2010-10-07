@@ -12,10 +12,14 @@ Shopping Cart
 В `protected/config/main.php` добавить:
 ~~~
 [php]
+'import'=>array(
+    'ext.yiiext.components.shoppingCart.*'
+),
+
 'components' => array(
   'shoppingCart' =>
     array(
-        'class' => 'ext.shoppingCart.EShoppingCart',
+        'class' => 'ext.yiiext.components.shoppingCart.EShoppingCart',
     ),
 )
 ~~~
