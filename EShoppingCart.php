@@ -3,7 +3,7 @@
  * Shopping cart class
  *
  * @author pirrat <mrakobesov@gmail.com>
- * @version 0.7
+ * @version 0.8
  * @package ShoppingCart
  */
 
@@ -16,14 +16,14 @@ class EShoppingCart extends CMap {
     public $refresh = true;
 
     public $discounts = array();
+
     /**
-     * Сумма скидки на всю корзину
+     * Cart-wide discount sum
      * @var float
      */
     protected $discountPrice = 0.0;
 
-    public function init() {
-
+    public function init(){
         $this->restoreFromSession();
     }
 
@@ -41,7 +41,7 @@ class EShoppingCart extends CMap {
     /**
      * Add item to the shopping cart
      * If the position was previously added to the cart,
-     * then information of it is updated, and count increases by $quantity
+     * then information about it is updated, and count increases by $quantity
      * @param IECartPosition $position
      * @param int count of elements positions
      */
@@ -59,6 +59,8 @@ class EShoppingCart extends CMap {
 
 
     /**
+     * Add $value items to position with $key specified
+     * @return void
      * @param mixed $key
      * @param mixed $value
      */
@@ -80,9 +82,9 @@ class EShoppingCart extends CMap {
 
     /**
      * Updates the position in the shopping cart
-     * If the position was previously added, then it will be updated in shopping cart,
-     * if the position was not previously in the cart, it will be added there.
-     * If the count of less than 1, the position will be deleted.
+     * If position was previously added, then it will be updated in shopping cart,
+     * if position was not previously in the cart, it will be added there.
+     * If count is less than 1, the position will be deleted.
      *
      * @param IECartPosition $position
      * @param int $quantity
@@ -149,16 +151,26 @@ class EShoppingCart extends CMap {
         return $price;
     }
 
+    /**
+     * onRemovePosition event
+     * @param  $event
+     * @return void
+     */
     public function onRemovePosition($event) {
         $this->raiseEvent('onRemovePosition', $event);
     }
 
+    /**
+     * onUpdatePoistion event
+     * @param  $event
+     * @return void
+     */
     public function onUpdatePoistion($event) {
         $this->raiseEvent('onUpdatePoistion', $event);
     }
 
     /**
-     * apply discounts for all positions
+     * Apply discounts to all positions
      * @return void
      */
     protected function applyDiscounts() {
@@ -170,6 +182,22 @@ class EShoppingCart extends CMap {
         }
     }
 
+    /**
+     * Set cart-wide discount sum
+     *
+     * @param float $price
+     * @return void
+     */
+    public function setDiscountPrice($price){
+        $this->discountPrice = $price;
+    }
+
+    /**
+     * Add $price to cart-wide discount sum
+     *
+     * @param float $price
+     * @return void
+     */
     public function addDiscountPrice($price){
         $this->discountPrice += $price;
     }
@@ -184,6 +212,7 @@ class EShoppingCart extends CMap {
     }
 
     /**
+     * Returns if cart is empty
      * @return bool
      */
     public function isEmpty()

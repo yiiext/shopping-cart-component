@@ -198,7 +198,8 @@ $price = $position->getQuantity(); //2
 
 В методе apply должен быть описан механизм применения скидки.
 
-Применяется она путем вызова метода addDiscountPrice либо у позиции, либо у корзины( EShoppingCart::addDiscountPrice и Position::addDiscountPrice).
+Применяется она путем вызова метода Position::addDiscountPrice/Position::setDiscountPrice у позиции,
+либо EShoppingCart::addDiscountPrice/EShoppingCart::setDiscountPrice у корзины.
 В метод передается значение на которое будет уменьшена стоимость(всей корзины или отдельной позиции соответственно).
 
 Пример класса скидки:

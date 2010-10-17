@@ -194,7 +194,8 @@ will change cart total or a single position price.
 Discount is a class that implements IEDiscount and defines apply() method that describes
 how exactly discount is applied.
 
-Discount is calculated by applying addDiscountPrice() position's method (Position::addDiscountPrice) or whole cart method (EShoppingCart::addDiscountPrice).
+Discount is calculated by applying Position::addDiscountPrice/Position::setDiscountPrice position's
+method or EShoppingCart::addDiscountPrice/EShoppingCart::setDiscountPrice cart-wide method.
 This methods are getting one parameter that holds a value of cart total reduction or individual position reduction.
 
 Discount class example:
