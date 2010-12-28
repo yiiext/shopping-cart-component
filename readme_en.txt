@@ -115,13 +115,13 @@ Tells if cart is empty.
 $position = Yii::app()->shoppingCart->isEmpty(1);
 ~~~
 
-### EShoppingCart::getСount()
+### EShoppingCart::getCount()
 Returns positions count.
 ~~~
 [php]
 Yii::app()->shoppingCart->put($book,2);
 Yii::app()->shoppingCart->put($book2,3);
-Yii::app()->shoppingCart->getСount(); //2
+Yii::app()->shoppingCart->getCount(); //2
 ~~~
 
 ### EShoppingCart::getItemsCount()
@@ -245,7 +245,7 @@ There are 2 events in ShoppingCart implemented in a standard Yii way:
 
 1) onUpdatePosition - is triggered when position is added or updated.
 
-2) onRemovePosition - сis triggered when position is deleted.
+2) onRemovePosition - is triggered when position is deleted.
 
 Usage:
 ~~~
@@ -258,10 +258,10 @@ Yii::app()->shoppingCart->put($book);
 ~~~
 When onUpdatePoistion event is fired, call center will be notified.
 
-Working with a cart as СMap
+Working with a cart as CMap
 ---------------------------
 
-ShoppingCart is a child of СMap so you can work with the cart as an array.
+ShoppingCart is a child of CMap so you can work with the cart as an array.
 
 ~~~
 [php]

@@ -117,13 +117,13 @@ $position = Yii::app()->shoppingCart->itemAt();
 $position = Yii::app()->shoppingCart->isEmpty(1);
 ~~~
 
-### EShoppingCart::getСount()
+### EShoppingCart::getCount()
 Возвращает количество позиций
 ~~~
 [php]
 Yii::app()->shoppingCart->put($book,2);
 Yii::app()->shoppingCart->put($book2,3);
-Yii::app()->shoppingCart->getСount(); //2
+Yii::app()->shoppingCart->getCount(); //2
 ~~~
 
 ### EShoppingCart::getItemsCount()
@@ -263,10 +263,10 @@ Yii::app()->shoppingCart->put($book);
 ~~~
 При срабатывание события onUpdatePoistion, об этом будет оповещен call center.
 
-Сmap - работаем с корзиной, как с массивом.
+CMap - работаем с корзиной, как с массивом.
 -------------------------------------------
 
-Класс ShoppingCart наследует Сmap, это позволяет работать с корзиной как с массивом.
+Класс ShoppingCart наследует CMap, это позволяет работать с корзиной как с массивом.
 
 ~~~
 [php]
