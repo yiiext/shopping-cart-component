@@ -3,7 +3,7 @@
  * Discount abstract class
  *
  * @author pirrat <mrakobesov@gmail.com>
- * @version 0.7
+ * @version 0.8
  * @package ShoppingCart
  *
  */
