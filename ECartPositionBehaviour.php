@@ -4,7 +4,7 @@
  * position in the cart
  *
  * @author pirrat <mrakobesov@gmail.com>
- * @version 0.8
+ * @version 0.9
  * @package ShoppingCart
  *
  * Can be used with non-AR models.
@@ -35,7 +35,7 @@ class ECartPositionBehaviour extends CActiveRecordBehavior {
      *
      */
     public function getSumPrice($withDiscount = true) {
-        $fullSum = $this->owner->getPrice() * $this->quantity;
+        $fullSum = $this->getOwner()->getPrice() * $this->quantity;
         if($withDiscount)
             $fullSum -=  $this->discountPrice;
         return $fullSum;
@@ -63,7 +63,7 @@ class ECartPositionBehaviour extends CActiveRecordBehavior {
      */
     public function __wakeup() {
         if ($this->refresh === true)
-            $this->owner->refresh();
+            $this->getOwner()->refresh();
     }
 
     /**

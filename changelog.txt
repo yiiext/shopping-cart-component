@@ -1,3 +1,10 @@
+0.9
+---
+- Added optional cartId property to EShoppingCart (rak)
+- Renamed onUpdatePoistion to onUpdatePosition (rak)
+- Fixed the bug when ECartPositionBehaviour is attached multiple times (rak)
+- Added ability to connect EShoppingCart by necessity (rak)
+
 0.8
 ---
 - Added ECartPositionBehavior::setDiscountPrice (Sam Dark)

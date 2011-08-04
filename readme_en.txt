@@ -9,18 +9,32 @@ It uses user session as a cart data storage.
 Installing and configuring
 --------------------------
 
+### 1 way: Registration in the config file
 Add to `protected/config/main.php`:
 ~~~
 [php]
 'import'=>array(
     'ext.yiiext.components.shoppingCart.*'
 ),
+
 'components' => array(
   'shoppingCart' =>
     array(
         'class' => 'ext.yiiext.components.shoppingCart.EShoppingCart',
     ),
 )
+~~~
+### 2 way: Registration by necessity
+~~~
+[php]
+$cart = Yii::createComponent(array(
+	'class' => 'ext.yiiext.components.shoppingCart.EShoppingCart'
+));
+//Important!
+$cart->init();
+
+$book = Book::model()->findByPk(1);
+$cart->put($book);
 ~~~
 
 Preparing a model
@@ -251,12 +265,12 @@ Usage:
 ~~~
 [php]
 $cN = new CallCenterNotifier();
-Yii::app()->shoppingCart->attachEventHandler('onUpdatePoistion',array($cN, 'updatePositionInShoppingCart'));
+Yii::app()->shoppingCart->attachEventHandler('onUpdatePosition',array($cN, 'updatePositionInShoppingCart'));
 
 $book = Book::model()->findByPk(1);
 Yii::app()->shoppingCart->put($book);
 ~~~
-When onUpdatePoistion event is fired, call center will be notified.
+When onUpdatePosition event is fired, call center will be notified.
 
 Working with a cart as CMap
 ---------------------------

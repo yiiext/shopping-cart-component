@@ -8,7 +8,7 @@ Shopping Cart
 
 Установка и настройка
 ---------------------
-
+### 1 вариант: Подключение через конфиг
 В `protected/config/main.php` добавить:
 ~~~
 [php]
@@ -22,6 +22,18 @@ Shopping Cart
         'class' => 'ext.yiiext.components.shoppingCart.EShoppingCart',
     ),
 )
+~~~
+### 2 вариант: Подключение по необходимости
+~~~
+[php]
+$cart = Yii::createComponent(array(
+	'class' => 'ext.yiiext.components.shoppingCart.EShoppingCart'
+));
+//Важно
+$cart->init();
+
+$book = Book::model()->findByPk(1);
+$cart->put($book);
 ~~~
 
 Подготавливаем модель
@@ -256,12 +268,12 @@ class TestDiscount extends IEDiscount {
 ~~~
 [php]
 $cN = new CallCenterNotifier();
-Yii::app()->shoppingCart->attachEventHandler('onUpdatePoistion',array($cN, 'updatePositionInShoppingCart'));
+Yii::app()->shoppingCart->attachEventHandler('onUpdatePosition',array($cN, 'updatePositionInShoppingCart'));
 
 $book = Book::model()->findByPk(1);
 Yii::app()->shoppingCart->put($book);
 ~~~
-При срабатывание события onUpdatePoistion, об этом будет оповещен call center.
+При срабатывание события onUpdatePosition, об этом будет оповещен call center.
 
 CMap - работаем с корзиной, как с массивом.
 -------------------------------------------

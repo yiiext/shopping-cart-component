@@ -4,7 +4,7 @@
  * IECartPosition
  *
  * @author pirrat <mrakobesov@gmail.com>
- * @version 0.8
+ * @version 0.9
  * @package ShoppingCart
  */
 interface IECartPosition {

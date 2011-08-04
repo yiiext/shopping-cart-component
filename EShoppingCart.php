@@ -3,7 +3,7 @@
  * Shopping cart class
  *
  * @author pirrat <mrakobesov@gmail.com>
- * @version 0.8
+ * @version 0.9
  * @package ShoppingCart
  */
 
@@ -16,6 +16,8 @@ class EShoppingCart extends CMap {
     public $refresh = true;
 
     public $discounts = array();
+	
+	public $cartId = __CLASS__;
 
     /**
      * Cart-wide discount sum
@@ -31,7 +33,7 @@ class EShoppingCart extends CMap {
      * Restores the shopping cart from the session
      */
     public function restoreFromSession() {
-        $data = Yii::app()->getUser()->getState(__CLASS__);
+        $data = unserialize(Yii::app()->getUser()->getState($this->cartId));
         if (is_array($data) || $data instanceof Traversable)
             foreach ($data as $key => $product)
                 parent::add($key, $product);
@@ -94,7 +96,8 @@ class EShoppingCart extends CMap {
             throw new InvalidArgumentException('invalid argument 1, product must implement CComponent interface');
 
         $key = $position->getId();
-
+		
+		$position->detachBehavior("CartPosition");
         $position->attachBehavior("CartPosition", new ECartPositionBehaviour());
         $position->setRefresh($this->refresh);
 
@@ -106,7 +109,7 @@ class EShoppingCart extends CMap {
             parent::add($key, $position);
 
         $this->applyDiscounts();
-        $this->onUpdatePoistion(new CEvent($this));
+        $this->onUpdatePosition(new CEvent($this));
         $this->saveState();
     }
 
@@ -115,7 +118,7 @@ class EShoppingCart extends CMap {
      * @return void
      */
     protected function saveState() {
-        Yii::app()->getUser()->setState(__CLASS__, $this->toArray());
+        Yii::app()->getUser()->setState($this->cartId, serialize($this->toArray()));
     }
 
     /**
@@ -165,8 +168,8 @@ class EShoppingCart extends CMap {
      * @param  $event
      * @return void
      */
-    public function onUpdatePoistion($event) {
-        $this->raiseEvent('onUpdatePoistion', $event);
+    public function onUpdatePosition($event) {
+        $this->raiseEvent('onUpdatePosition', $event);
     }
 
     /**
