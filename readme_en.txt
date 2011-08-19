@@ -11,6 +11,7 @@ Installing and configuring
 
 ### 1 way: Registration in the config file
 Add to `protected/config/main.php`:
+
 ~~~
 [php]
 'import'=>array(
@@ -25,6 +26,7 @@ Add to `protected/config/main.php`:
 )
 ~~~
 ### 2 way: Registration by necessity
+
 ~~~
 [php]
 $cart = Yii::createComponent(array(
@@ -131,6 +133,7 @@ $position = Yii::app()->shoppingCart->isEmpty(1);
 
 ### EShoppingCart::getCount()
 Returns positions count.
+
 ~~~
 [php]
 Yii::app()->shoppingCart->put($book,2);
@@ -140,6 +143,7 @@ Yii::app()->shoppingCart->getCount(); //2
 
 ### EShoppingCart::getItemsCount()
 Returns items count.
+
 ~~~
 [php]
 Yii::app()->shoppingCart->put($book,2);
@@ -149,6 +153,7 @@ Yii::app()->shoppingCart->getItemsCount(); //5
 
 ### EShoppingCart::getCost($withDiscount)
 Returns cart total.
+
 ~~~
 [php]
 Yii::app()->shoppingCart->put($book,2); //price=100
@@ -158,6 +163,7 @@ Yii::app()->shoppingCart->getCost(); //400
 
 ### EShoppingCart::getPositions()
 Returns an array with all positions.
+
 ~~~
 [php]
 $positions = Yii::app()->shoppingCart->getPositions();
@@ -168,6 +174,7 @@ foreach($positions as $position) {
 
 ### IECartPosition::getPrice()
 Returns a price for a single item for this position.
+
 ~~~
 [php]
 $positions = Yii::app()->shoppingCart->getPositions();
@@ -178,6 +185,7 @@ $price = $position->getPrice();
 
 ### IECartPosition::getSumPrice($withDiscount)
 Returns position price = single item price*items count
+
 ~~~
 [php]
 $book = Book::model()->findByPk(1); //price = 100
@@ -190,6 +198,7 @@ $price = $position->getSumPrice(); //200 (2*100)
 
 ### IECartPosition::getQuantity()
 Returns position items quantity
+
 ~~~
 [php]
 $book = Book::model()->findByPk(1); //price = 100
@@ -213,6 +222,7 @@ method or EShoppingCart::addDiscountPrice/EShoppingCart::setDiscountPrice cart-w
 This methods are getting one parameter that holds a value of cart total reduction or individual position reduction.
 
 Discount class example:
+
 ~~~
 [php]
 class TestDiscount extends IEDiscount {
@@ -237,6 +247,7 @@ if there is more than one item for a single position, there will be $rate % disc
 one item and it will be applied to position price.
 
 You can apply unlimited discount rules that will be called one by one:
+
 ~~~
 [php]
         'shoppingCart' =>
@@ -262,6 +273,7 @@ There are 2 events in ShoppingCart implemented in a standard Yii way:
 2) onRemovePosition - is triggered when position is deleted.
 
 Usage:
+
 ~~~
 [php]
 $cN = new CallCenterNotifier();
