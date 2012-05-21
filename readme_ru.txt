@@ -10,8 +10,7 @@ Shopping Cart
 ---------------------
 ### 1 вариант: Подключение через конфиг
 В `protected/config/main.php` добавить:
-~~~
-[php]
+```php
 'import'=>array(
     'ext.yiiext.components.shoppingCart.*'
 ),
@@ -22,10 +21,9 @@ Shopping Cart
         'class' => 'ext.yiiext.components.shoppingCart.EShoppingCart',
     ),
 )
-~~~
+```
 ### 2 вариант: Подключение по необходимости
-~~~
-[php]
+```php
 $cart = Yii::createComponent(array(
 	'class' => 'ext.yiiext.components.shoppingCart.EShoppingCart'
 ));
@@ -34,15 +32,14 @@ $cart->init();
 
 $book = Book::model()->findByPk(1);
 $cart->put($book);
-~~~
+```
 
 Подготавливаем модель
 ---------------------
 Модели, которым необходимо дать возможность добавления в корзину,
 должны реализовать интерфейс `IECartPosition`:
 
-~~~
-[php]
+```php
 class Book extends CActiveRecord implements IECartPosition {
     public static function model($className = __CLASS__) {
         return parent::model($className);
@@ -56,7 +53,7 @@ class Book extends CActiveRecord implements IECartPosition {
         return $this->price;
     }
 }
-~~~
+```
 
 API
 ---
@@ -65,14 +62,13 @@ API
 Добавляет в корзину позицию товара в количестве $quantity.
 Если позиция товара уже была в корзине, то данные модели обновляются, а количество увеличивается на $quantity
 
-~~~
-[php]
+```php
 $book = Book::model()->findByPk(1);
 Yii::app()->shoppingCart->put($book); //в корзине 1 позиция с id=1 в количестве 1 единица.
 Yii::app()->shoppingCart->put($book,2); //в корзине 1 позиция с id=1 в количестве 3 единицы.
 $book2 = Book::model()->findByPk(2);
 Yii::app()->shoppingCart->put($book2); //в корзине 2 позиции с id=1 и id=2
-~~~
+```
 
 ### EShoppingCart::update($position, $quantity)
 Обновляет в корзине позицию товара.
@@ -80,125 +76,112 @@ Yii::app()->shoppingCart->put($book2); //в корзине 2 позиции с i
 Если позиции не было в корзине, то она добавляется в ней.
 Если установлено $quantity<1, то позиция удаляется из корзины
 
-~~~
-[php]
+```php
 $book = Book::model()->findByPk(1);
 Yii::app()->shoppingCart->put($book); //в корзине 1 позиция с id=1 в количестве 1 единица.
 Yii::app()->shoppingCart->update($book,2); //в корзине 1 позиция с id=1 в количестве 2 единицы.
-~~~
+```
 
 ### EShoppingCart::remove($key)
 Удаляет позицию из корзины
 
-~~~
-[php]
+```php
 $book = Book::model()->findByPk(1);
 Yii::app()->shoppingCart->put($book,2); //в корзине 1 позиция с id=1 в количестве 2 единицы.
 Yii::app()->shoppingCart->remove($book->getId()); //в корзине нет позиций
-~~~
+```
 
 ### EShoppingCart::clear()
 Очищает корзину
 
-~~~
-[php]
+```php
 Yii::app()->shoppingCart->clear();
-~~~
+```
 
 ### EShoppingCart::itemAt($key)
 Возвращает позицию по ключу
 
-~~~
-[php]
+```php
 $position = Yii::app()->shoppingCart->itemAt(1);
-~~~
+```
 
 ### EShoppingCart::contains($key)
 Возвращает boolean: есть ли в корзине позиция с id=$key?
 
-~~~
-[php]
+```php
 $position = Yii::app()->shoppingCart->itemAt();
-~~~
+```
 
 ### EShoppingCart::isEmpty()
 Возвращает true, если корзина пустая.
 
-~~~
-[php]
+```php
 $position = Yii::app()->shoppingCart->isEmpty(1);
-~~~
+```
 
 ### EShoppingCart::getCount()
 Возвращает количество позиций
-~~~
-[php]
+```php
 Yii::app()->shoppingCart->put($book,2);
 Yii::app()->shoppingCart->put($book2,3);
 Yii::app()->shoppingCart->getCount(); //2
-~~~
+```
 
 ### EShoppingCart::getItemsCount()
 Возвращает количество товаров
-~~~
-[php]
+```php
 Yii::app()->shoppingCart->put($book,2);
 Yii::app()->shoppingCart->put($book2,3);
 Yii::app()->shoppingCart->getItemsCount(); //5
-~~~
+```
 
 ### EShoppingCart::getCost($withDiscount)
 Возвращает стоимость всей корзины
-~~~
-[php]
+```php
 Yii::app()->shoppingCart->put($book,2); //price=100
 Yii::app()->shoppingCart->put($book2,1); //price=200
 Yii::app()->shoppingCart->getCost(); //400
-~~~
+```
 
 ### EShoppingCart::getPositions()
 Возвращает массив позиций
-~~~
-[php]
+```php
 $positions = Yii::app()->shoppingCart->getPositions();
 foreach($positions as $position) {
 ...
 }
-~~~
+```
 
 ### IECartPosition::getPrice()
 Возвращает цену одной единицы позиции
-~~~
-[php]
+```php
 $positions = Yii::app()->shoppingCart->getPositions();
 foreach($positions as $position) {
 $price = $position->getPrice();
 }
-~~~
+```
 
 ### IECartPosition::getSumPrice($withDiscount)
 Возвращает стоимость позиции = стоимость одной единицы*кол-во
-~~~
-[php]
+```php
 $book = Book::model()->findByPk(1); //цена товара = 100
 Yii::app()->shoppingCart->put($book,2); //положим 2 единицы товара
 $positions = Yii::app()->shoppingCart->getPositions();
 foreach($positions as $position) {
 $price = $position->getSumPrice(); //200 (2*100)
 }
-~~~
+```
 
 ### IECartPosition::getQuantity()
 Возвращает кол-во единиц в позиции
-~~~
-[php]
+```php
 $book = Book::model()->findByPk(1); //цена товара = 100
 Yii::app()->shoppingCart->put($book,2); //положим 2 единицы товара
 $positions = Yii::app()->shoppingCart->getPositions();
 foreach($positions as $position) {
 $price = $position->getQuantity(); //2
 }
-~~~
+```
 
 Система скидок
 --------------
@@ -215,8 +198,7 @@ $price = $position->getQuantity(); //2
 В метод передается значение на которое будет уменьшена стоимость(всей корзины или отдельной позиции соответственно).
 
 Пример класса скидки:
-~~~
-[php]
+```php
 class TestDiscount extends IEDiscount {
     /**
      * Скидка в %
@@ -233,14 +215,13 @@ class TestDiscount extends IEDiscount {
         }
     }
 }
-~~~
+```
 Данная скидка делает следующее: если в корзину был добавлен товар в количестве больше 1, то к одной единице применяется скидка в $rate % , и на эту стоимость уменьшается суммарная стоимость позиции.
 
 К корзине может быть применен не ограниченный набор скидок, которые будут вызываться по цепочке.
 
 Список скидок должен быть описан в конфиге:
-~~~
-[php]
+```php
         'shoppingCart' =>
         array(
             'class' => 'ext.yiiext.components.shoppingCart.EShoppingCart',
@@ -253,7 +234,7 @@ class TestDiscount extends IEDiscount {
             ),
 
         ),
-~~~
+```
 
 События.
 --------------
@@ -265,14 +246,13 @@ class TestDiscount extends IEDiscount {
 2) onRemovePosition - срабатывает при удалении позиции из корзины.
 
 Пример использования:
-~~~
-[php]
+```php
 $cN = new CallCenterNotifier();
 Yii::app()->shoppingCart->attachEventHandler('onUpdatePosition',array($cN, 'updatePositionInShoppingCart'));
 
 $book = Book::model()->findByPk(1);
 Yii::app()->shoppingCart->put($book);
-~~~
+```
 При срабатывание события onUpdatePosition, об этом будет оповещен call center.
 
 CMap - работаем с корзиной, как с массивом.
@@ -280,8 +260,7 @@ CMap - работаем с корзиной, как с массивом.
 
 Класс ShoppingCart наследует CMap, это позволяет работать с корзиной как с массивом.
 
-~~~
-[php]
+```php
 $book = Book::model()->findByPk(1);
 Yii::app()->shoppingCart[] = $book; //добавляем в корзину позицию.
 
@@ -290,4 +269,4 @@ foreach(Yii::app()->shoppingCart as $position)
 {
 ...
 }
-~~~
+```

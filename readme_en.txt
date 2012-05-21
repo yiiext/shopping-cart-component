@@ -12,8 +12,7 @@ Installing and configuring
 ### 1 way: Registration in the config file
 Add to `protected/config/main.php`:
 
-~~~
-[php]
+```php
 'import'=>array(
     'ext.yiiext.components.shoppingCart.*'
 ),
@@ -24,11 +23,10 @@ Add to `protected/config/main.php`:
         'class' => 'ext.yiiext.components.shoppingCart.EShoppingCart',
     ),
 )
-~~~
+```
 ### 2 way: Registration by necessity
 
-~~~
-[php]
+```php
 $cart = Yii::createComponent(array(
 	'class' => 'ext.yiiext.components.shoppingCart.EShoppingCart'
 ));
@@ -37,14 +35,13 @@ $cart->init();
 
 $book = Book::model()->findByPk(1);
 $cart->put($book);
-~~~
+```
 
 Preparing a model
 -----------------
 Models that you are planning to put into the cart should implement `IECartPosition` interface:
 
-~~~
-[php]
+```php
 class Book extends CActiveRecord implements IECartPosition {
     public static function model($className = __CLASS__) {
         return parent::model($className);
@@ -58,7 +55,7 @@ class Book extends CActiveRecord implements IECartPosition {
         return $this->price;
     }
 }
-~~~
+```
 
 API
 ---
@@ -67,14 +64,13 @@ API
 Adds $quantity items to the cart.
 If item is already in the cart, item data is being updated and item quantity is summed with $quantity.
 
-~~~
-[php]
+```php
 $book = Book::model()->findByPk(1);
 Yii::app()->shoppingCart->put($book); //1 item with id=1, quantity=1.
 Yii::app()->shoppingCart->put($book,2); //1 item with id=1, quantity=3.
 $book2 = Book::model()->findByPk(2);
 Yii::app()->shoppingCart->put($book2); //2 items with id=1 and id=2.
-~~~
+```
 
 ### EShoppingCart::update($position, $quantity)
 Updates cart item.
@@ -82,132 +78,119 @@ If item is already in the cart, item data is being updated and item quantity is 
 If there is no such item yet it will be added.
 If $quantity<1 then item will be deleted.
 
-~~~
-[php]
+```php
 $book = Book::model()->findByPk(1);
 Yii::app()->shoppingCart->put($book); //1 item with id=1, quantity=1.
 Yii::app()->shoppingCart->update($book,2); //1 item with id=1, quantity=2.
-~~~
+```
 
 ### EShoppingCart::remove($key)
 Removes item from the cart.
 
-~~~
-[php]
+```php
 $book = Book::model()->findByPk(1);
 Yii::app()->shoppingCart->put($book,2); //1 item with id=1, quantity=2.
 Yii::app()->shoppingCart->remove($book->getId()); //no items
-~~~
+```
 
 ### EShoppingCart::clear()
 Clears all cart items.
 
-~~~
-[php]
+```php
 Yii::app()->shoppingCart->clear();
-~~~
+```
 
 ### EShoppingCart::itemAt($key)
 Returns item at key $key.
 
-~~~
-[php]
+```php
 $position = Yii::app()->shoppingCart->itemAt(1);
-~~~
+```
 
 ### EShoppingCart::contains($key)
 Tells if cart contains item with id=$key.
 
-~~~
-[php]
+```php
 $position = Yii::app()->shoppingCart->itemAt();
-~~~
+```
 
 ### EShoppingCart::isEmpty()
 Tells if cart is empty.
 
-~~~
-[php]
+```php
 $position = Yii::app()->shoppingCart->isEmpty(1);
-~~~
+```
 
 ### EShoppingCart::getCount()
 Returns positions count.
 
-~~~
-[php]
+```php
 Yii::app()->shoppingCart->put($book,2);
 Yii::app()->shoppingCart->put($book2,3);
 Yii::app()->shoppingCart->getCount(); //2
-~~~
+```
 
 ### EShoppingCart::getItemsCount()
 Returns items count.
 
-~~~
-[php]
+```php
 Yii::app()->shoppingCart->put($book,2);
 Yii::app()->shoppingCart->put($book2,3);
 Yii::app()->shoppingCart->getItemsCount(); //5
-~~~
+```
 
 ### EShoppingCart::getCost($withDiscount)
 Returns cart total.
 
-~~~
-[php]
+```php
 Yii::app()->shoppingCart->put($book,2); //price=100
 Yii::app()->shoppingCart->put($book2,1); //price=200
 Yii::app()->shoppingCart->getCost(); //400
-~~~
+```
 
 ### EShoppingCart::getPositions()
 Returns an array with all positions.
 
-~~~
-[php]
+```php
 $positions = Yii::app()->shoppingCart->getPositions();
 foreach($positions as $position) {
 ...
 }
-~~~
+```
 
 ### IECartPosition::getPrice()
 Returns a price for a single item for this position.
 
-~~~
-[php]
+```php
 $positions = Yii::app()->shoppingCart->getPositions();
 foreach($positions as $position) {
 $price = $position->getPrice();
 }
-~~~
+```
 
 ### IECartPosition::getSumPrice($withDiscount)
 Returns position price = single item price*items count
 
-~~~
-[php]
+```php
 $book = Book::model()->findByPk(1); //price = 100
 Yii::app()->shoppingCart->put($book,2); //putting 2 items
 $positions = Yii::app()->shoppingCart->getPositions();
 foreach($positions as $position) {
 $price = $position->getSumPrice(); //200 (2*100)
 }
-~~~
+```
 
 ### IECartPosition::getQuantity()
 Returns position items quantity
 
-~~~
-[php]
+```php
 $book = Book::model()->findByPk(1); //price = 100
 Yii::app()->shoppingCart->put($book,2); //putting 2 items
 $positions = Yii::app()->shoppingCart->getPositions();
 foreach($positions as $position) {
 $price = $position->getQuantity(); //2
 }
-~~~
+```
 
 Discounts
 ---------
@@ -223,8 +206,7 @@ This methods are getting one parameter that holds a value of cart total reductio
 
 Discount class example:
 
-~~~
-[php]
+```php
 class TestDiscount extends IEDiscount {
     /**
      * % discount
@@ -241,15 +223,14 @@ class TestDiscount extends IEDiscount {
         }
     }
 }
-~~~
-This example dicount works like this:
+```
+This example discount works like this:
 if there is more than one item for a single position, there will be $rate % discount for
 one item and it will be applied to position price.
 
 You can apply unlimited discount rules that will be called one by one:
 
-~~~
-[php]
+```php
         'shoppingCart' =>
         array(
             'class' => 'ext.yiiext.components.shoppingCart.EShoppingCart',
@@ -262,7 +243,7 @@ You can apply unlimited discount rules that will be called one by one:
             ),
 
         ),
-~~~
+```
 
 Events
 ------
@@ -274,14 +255,13 @@ There are 2 events in ShoppingCart implemented in a standard Yii way:
 
 Usage:
 
-~~~
-[php]
+```php
 $cN = new CallCenterNotifier();
 Yii::app()->shoppingCart->attachEventHandler('onUpdatePosition',array($cN, 'updatePositionInShoppingCart'));
 
 $book = Book::model()->findByPk(1);
 Yii::app()->shoppingCart->put($book);
-~~~
+```
 When onUpdatePosition event is fired, call center will be notified.
 
 Working with a cart as CMap
@@ -289,8 +269,7 @@ Working with a cart as CMap
 
 ShoppingCart is a child of CMap so you can work with the cart as an array.
 
-~~~
-[php]
+```php
 $book = Book::model()->findByPk(1);
 Yii::app()->shoppingCart[] = $book; //adding new position.
 
@@ -299,4 +278,4 @@ foreach(Yii::app()->shoppingCart as $position)
 {
 ...
 }
-~~~
+```
