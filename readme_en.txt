@@ -25,6 +25,7 @@ Add to `protected/config/main.php`:
     ),
 )
 ~~~
+
 ### 2 way: Registration by necessity
 
 ~~~
