@@ -12,8 +12,8 @@ Installing and configuring
 ### 1 way: Registration in the config file
 Add to `protected/config/main.php`:
 
-~~~
-[php]
+```
+<?php
 'import'=>array(
     'ext.yiiext.components.shoppingCart.*'
 ),
@@ -24,7 +24,7 @@ Add to `protected/config/main.php`:
         'class' => 'ext.yiiext.components.shoppingCart.EShoppingCart',
     ),
 )
-~~~
+```
 
 ### 2 way: Registration by necessity
 
